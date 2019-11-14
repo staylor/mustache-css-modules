@@ -4,9 +4,9 @@ import log from 'fancy-log';
 import postcss from './gulp/postcss';
 
 gulp.task('default', () => {
-  const src = path.resolve(path.join(__dirname, process.env.MUSTACHE_CSS_DIR));
-
-  const watchers = [gulp.watch([path.join(src, '**/*.scss')], postcss)];
+  const src = path.join(__dirname, process.env.MUSTACHE_CSS_DIR);
+  log(`Watching ${src.replace(__dirname, '')}...`);
+  const watchers = [gulp.watch([path.join(src, '**/*.scss'), `!.css-modules`], postcss)];
 
   watchers.forEach(watcher => {
     watcher.on('change', event => {

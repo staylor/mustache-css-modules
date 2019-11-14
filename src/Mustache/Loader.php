@@ -20,7 +20,10 @@ class Loader extends \Mustache_Loader_FilesystemLoader {
     }
     if (!array_key_exists($name, $this->cssModules)) {
       $this->cssModules[$name] = null;
-      $cssFile = getenv('MUSTACHE_CSS_DIR') . '/' . $name . '.css';
+      $cssDir = getenv('MUSTACHE_CSS_DIR') . '/';
+      $info = pathinfo($fileName);
+      $relative = str_replace([$cssDir, '.' . $info['extension']], ['', '.css'], $fileName);
+      $cssFile = $cssDir . '.css-modules/' . $relative;
       if (file_exists($cssFile)) {
         $contents = file_get_contents($cssFile);
         if ($contents) {

@@ -23,7 +23,7 @@ trait ModulesLoader {
     if ( ! $this->templatePath ) {
       $this->templatePath = getenv('MUSTACHE_CSS_DIR');
     }
-    return new \Mustache_Loader_FilesystemLoader( $this->templatePath );
+    return new Loader( $this->templatePath );
   }
 
   /**
@@ -34,7 +34,7 @@ trait ModulesLoader {
     if ( ! $this->partialsPath ) {
       $this->partialsPath = getenv('MUSTACHE_CSS_DIR');
     }
-    return new Mustache\Loader( $this->partialsPath );
+    return new Loader( $this->partialsPath );
   }
 
   public function setConfig( array $config = [] ) {
@@ -77,10 +77,12 @@ trait ModulesLoader {
   }
 
   public function getCssModules() {
-    return $this->getEngine()->getPartialsLoader()->getCssModules();
+    return $this->getEngine()->getLoader()->getCssModules() . PHP_EOL .
+      $this->getEngine()->getPartialsLoader()->getCssModules();
   }
 
   public function resetCssModules() {
+    $this->getEngine()->getLoader()->resetCssModules();
     $this->getEngine()->getPartialsLoader()->resetCssModules();
   }
 }

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "wonderboymusic/mustache-css-modules": "^0.1.0"
+    }
+}

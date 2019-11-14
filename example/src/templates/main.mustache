@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head>
+  <title>Mustache + CSS Modules Example</title>
+</head>
+<body>
+  <main class="{{ css.main.main }}">
+    The body.
+
+    {{> one/one }}
+    {{> one/two/two }}
+    {{> one/two/three/three }}
+  </main>
+  {{> footer }}
+</body>
+</html>
