@@ -1,0 +1,21 @@
+{
+  "name": "wonderboymusic/mustache-css-modules",
+  "description": "Use CSS Modules in Mustache templates.",
+  "keywords": ["templating", "mustache", "css"],
+  "homepage": "https://github.com/staylor/mustache-css-modules",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Scott Taylor",
+      "email": "wonderboymusic@gmail.com",
+      "homepage": "https://highforthis.com"
+    }
+  ],
+  "require": {
+    "mustache/mustache": "^2.12"
+  },
+  "autoload": {
+    "psr-4": { "Wonderboy": "src/" }
+  }
+}
