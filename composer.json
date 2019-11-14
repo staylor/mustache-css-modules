@@ -16,6 +16,6 @@
     "mustache/mustache": "^2.12"
   },
   "autoload": {
-    "psr-4": { "Wonderboy": "src/" }
+    "psr-4": { "Wonderboy\\": "src/" }
   }
 }
