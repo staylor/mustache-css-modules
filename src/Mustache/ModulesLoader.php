@@ -49,7 +49,7 @@ trait ModulesLoader {
 
   public function getConfig() {
     if ( ! $this->config ) {
-    	$this->setConfig();
+  	   $this->setConfig();
     }
 
     return $this->config;
@@ -73,11 +73,11 @@ trait ModulesLoader {
    * @return string
    */
   public function render( $template, $data ) {
-  	return $this->getEngine()->render( $template, $data );
+    return $this->getEngine()->render( $template, $data );
   }
 
   public function getCssModules() {
-  	return $this->getEngine()->getPartialsLoader()->getCssModules();
+    return $this->getEngine()->getPartialsLoader()->getCssModules();
   }
 
   public function resetCssModules() {
