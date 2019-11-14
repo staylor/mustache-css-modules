@@ -2,7 +2,7 @@
 
 Use CSS Modules in mustache templates
 
-WARNING: THIS DOES NOT WORK YET. I EXTRACTED IT FROM A PROJECT JUST TO ISOLATE IT IN A REPO. I HAVE LITERALLY NEVER RUN THE CODE IN ITS CURRENT FORM. DO NOT USE IT.
+The `example` folder contains an example implementation.
 
 ## Install
 
@@ -18,18 +18,27 @@ $ npm i
 
 ## Environment
 
-You must set `MUSTACHE_CSS_DIR` in your application's environment. The value will be used to look for Mustache partials and the SCSS files that reside next to them.
+You must set `MUSTACHE_CSS_DIR` in your application's environment. The value will be used to look for Mustache templates and the SCSS files that reside next to them.
 
-JavaScript files check for:
+JavaScript files check for this directory relative to project root:
 
 ```js
-const cssDir = process.env.MUSTACHE_CSS_DIR;
+const cssDir = path.join(__dirname, process.env.MUSTACHE_CSS_DIR);
 ```
 
-PHP files look for:
+PHP files look for the absolute path the folder containing your Mustache templates:
 
 ```php
 $cssDir = getenv('MUSTACHE_CSS_DIR');
+```
+
+Before autoloading, you can set this value directly in your bootstrap file:
+
+```php
+putenv('MUSTACHE_CSS_DIR=' . __DIR__ . '/src/templates');
+
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/src/app.php';
 ```
 
 ## Usage
@@ -61,7 +70,7 @@ Use the value of `.wrap` inside of your Mustache template:
 <footer class="{{ css.footer.wrap }}">Copyright &copy; 2019</footer>
 ```
 
-Use `footer` as a partial in a Mustache file (assume `home.mustache`):
+Use `footer` as a template in a Mustache file (e.g. `home.mustache`):
 
 ```html
 <!doctype html>
@@ -70,41 +79,49 @@ Use `footer` as a partial in a Mustache file (assume `home.mustache`):
   <title>Mustache + CSS Modules = 🤯</title>
 </head>
 <body>
-Some body content on a page that has a footer.
-
-{{> footer }}
+  <main class="{{ css.main.wrapper }}">
+  Some body content on a page that has a footer.
+  </main>
+  {{> footer }}
 </body>
 </html>
 ```
 
-Before this will work, your PHP view logic needs to expose `css` to the template:
+Before all of this will actually work, your PHP view logic needs to expose `css` to the template:
 
 ```php
-namespace YourApp;
-
 use Wonderboy\Mustache\ModulesLoader;
 use Wonderboy\Mustache\Template\Utils;
 
-class Router {
+class App {
   use ModulesLoader;
 
-  public function route() {
-    // logic that determines we want to render "home"
-
+  public function run() {
     $css = Utils::getCSSMap();
-    $rendered = $this->render('home', [ 'css' => $css ]);
+    $html = $this->render('main', [ 'css' => $css ]);
     // call after rendering to get collected styles
     // only partials that are part of the render have their styles collected
     $styles = $this->getCssModules();
     // at this point, you can do whatever you want with the output and with the styles
     // I prefer to insert them directly into the <head>, at the end
-    $output = str_replace( '</head>', $styles . PHP_EOL . '</head>', $rendered );
+    $output = str_replace( '</head>', $styles . PHP_EOL . '</head>', $html );
 
     // probably unnecessary, but you can reset the CSS Modules
     // $this->resetCssModules();
 
     // more logic?
-    echo $output
+    echo $output;
   }
 }
+
+$app = new App();
+$app->run();
+```
+
+## Development
+
+Run Gulp to automatically generate the build artifacts that make this all work:
+
+```
+$ npm run dev
 ```
